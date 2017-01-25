@@ -40,12 +40,9 @@ var SpendingTypesViewModel = function (allSpendings) {
 
             for (var k = 0; k < spendingTypesData.keys().length; k++) {
                 var val = spendingTypesData.get(spendingTypesData.keys()[k]);
-                //console.log(MCCTypes[spendingTypesData.keys()[k]]);
                 var MCCname = MCCTypes[spendingTypesData.keys()[k]];
-                console.log(MCCname.colorHex());
                 chartData.push([MCCname, val(), spendingTypesData.keys()[k].colorHex()]);
             }
-            //console.log([['Rodzaj wydatku', 'Koszt']].concat(chartData));
             var dataConcat = [['Rodzaj wydatku', 'Koszt', {role: 'style'}]].concat(chartData);
             console.log(dataConcat);
             var data = google.visualization.arrayToDataTable(dataConcat);

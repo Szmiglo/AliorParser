@@ -13,7 +13,6 @@
         <script type="text/javascript" src="https://momentjs.com/downloads/moment.min.js"></script>
 
         <script type="text/javascript" src="knockout.files.js"></script>
-        <script type="text/javascript" src="knockout.custombindings.js"></script>
         <script type="text/javascript" src="AliorParser.js"></script>
         <script type="text/javascript" src="ko.observableDictionary.js"></script>
         <script type="text/javascript" src="ViewModels/AllSpendingsViewModel.js"></script>
@@ -84,7 +83,6 @@
                     </div>
                     <div data-bind="visible: chartByMonthVM(), with: chartByMonthVM">
                         <h1>Wykresy wpływów do wydatków w ujęciu miesięcznym</h1>
-                        <h2>lol</h2>
                         <h3>Średni bilans na koniec miesiąca: <span data-bind="text: averageSummary"></span></h3>
                         <!-- ko foreach: monthsArray.keys() -->
                         <div class="col-md-6">
