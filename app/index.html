@@ -1,1 +1,118 @@
-<h1>Tu bedzie parser</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Moje wydatki</title>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js'></script>
+        <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+
+        <script type="text/javascript" src="knockout.files.js"></script>
+        <script type="text/javascript" src="knockout.custombindings.js"></script>
+        <script type="text/javascript" src="AliorParser.js"></script>
+        <script type="text/javascript" src="ko.observableDictionary.js"></script>
+        <script type="text/javascript" src="ViewModels/AllSpendingsViewModel.js"></script>
+        <script type="text/javascript" src="ViewModels/ViewModel.js"></script>
+        <script type="text/javascript" src="ViewModels/IncomeViewModel.js"></script>
+        <script type="text/javascript" src="ViewModels/ChartByMonthViewModel.js"></script>
+        <script type="text/javascript" src="ViewModels/SpendingDuringMonthViewModel.js"></script>
+        <script type="text/javascript" src="ViewModels/SpendingTypesViewModel.js"></script>
+        <script type="text/javascript">
+            google.load("visualization", "1", {packages: ["corechart"]});
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+
+                    <a class="navbar-brand" href="#">Analizator wydatków</a>
+                </div>
+
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li data-bind="css: {'active': !allSpendingsVM() && !chartByMonthVM()}"><a href="#" data-bind="click: $root.resetView">Wybierz plik</a></li>
+                        <li data-bind="css: {'active': $root.allSpendingsVM(), 'disabled': $root.loading()}"><a href="#" data-bind="click: $root.ShowAllSpendings">Zestawienie ogólne</a></li>
+                        <li data-bind="css: {'active': $root.chartByMonthVM(), 'disabled': $root.loading()}"><a href="#" data-bind="click: $root.ShowChartByMonth">Wykresy miesięczne</a></li>
+                        <li data-bind="css: {'active': $root.spendingTypesVM(), 'disabled': $root.loading()}"><a href="#" data-bind="click: $root.ShowSpendingTypes">Rodzaje wydatków</a></li>
+                    </ul>
+
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <div data-bind="visible: !allSpendingsVM() && !chartByMonthVM() && !spendingTypesVM()">
+                        <h1 class="page-header">Dashboard</h1>
+
+                        <label for="text_file">Wybierz plik CSV Alior Banku</label>
+                        <input type="file" id="text_file"
+                               data-bind="files: { onLoaded: TextFileLoadedCallback, fileFilter: 'text.*|application.*', readAs: 'text'}" />
+                    </div>
+                    <div data-bind="visible: allSpendingsVM(), with: allSpendingsVM">
+                        <h2 class="sub-header">Zestawienie transakcji</h2>
+                        <table data-bind="visible: allSpendings().length > 0" class="table table-striped">
+                            <thead>
+                                <tr data-bind="foreach: headers">
+                                    <th><span data-bind="text: title"></span> <span class="glyphicon glyphicon-chevron-up" data-bind="click: $parent.sortAsc"></span><span class="glyphicon glyphicon-chevron-down" data-bind="click: $parent.sortDesc"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ko foreach: allSpendings -->
+                                <tr>
+                                    <td data-bind="text: dataKsiegowania().format('DD.MM.YYYY')"></td>
+                                    <td data-bind="text: dataTransakcji().format('DD.MM.YYYY')"></td>
+                                    <td data-bind="text: nadawca"></td>
+                                    <td data-bind="text: odbiorca"></td>
+                                    <td data-bind="text: tytulPlatnosci"></td>
+                                    <td data-bind="text: opisTransakcji"></td>
+                                    <td data-bind="text: kwota"></td>
+                                    <td data-bind="text: waluta"></td>
+                                    <td data-bind="text: saldoPoOperacji"></td>
+
+                                </tr>
+                                <!-- /ko -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div data-bind="visible: chartByMonthVM(), with: chartByMonthVM">
+                        <h1>Wykresy wpływów do wydatków w ujęciu miesięcznym</h1>
+                        <h2>lol</h2>
+                        <h3>Średni bilans na koniec miesiąca: <span data-bind="text: averageSummary"></span></h3>
+                        <!-- ko foreach: monthsArray.keys() -->
+                        <div class="col-md-6">
+                            <h2 data-bind="text: $data"></h2>
+                            <div data-bind="attr: {id: 'chart_' + $data }" style="height: 400px"></div>
+                            <p>Saldo po miesiącu: <b><span data-bind="text: $parent.summaryData.get($data)()"></span></b> zł</p>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                    <div data-bind="visible: spendingTypesVM(), with: spendingTypesVM">
+                        <h1>Wykresy wpływów do wydatków w ujęciu miesięcznym</h1>
+                        <!-- ko foreach: monthsArray.keys() -->
+                        <div class="col-md-6">
+                            <h2 data-bind="text: $data"></h2>
+                            <div data-bind="attr: {id: 'spendingTypeChart_' + $data }" style="height: 800px"></div>
+                            
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script  type="text/javascript">
+            
+            ko.applyBindings(new ViewModel());
+
+        </script>
+
+    </body>
+</html>
