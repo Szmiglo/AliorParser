@@ -1,6 +1,6 @@
 ## Alior Parser
 
-Zapraszam na [Link](http://szmiglo.github.io/aliorparser.github.io/app/index.html)
+Zapraszam na [Link](http://szmiglo.github.io/AliorParser/app/index.html)
 
 ### Markdown
 
