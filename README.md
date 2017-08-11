@@ -1,35 +1,28 @@
-## Alior Parser
+# Alior Parser
 
-Test
+Analizator wydatków na podstawie danych z konta Alior Banku
 
-### Markdown
+AliorParser znajduje się [tym adresem](http://szmiglo.github.io/AliorParser/app/index.html)
 
-Markdown?
+### Użycie
 
-```markdown
-Syntax highlighted code block
+1. Zaloguj się na swoje konto w Alior Banku
+2. Wybierz interesujący cię filtr (np. pokaż wszystkie transakcje z całego roku)
+3. W panelu na dole kliknij "Pobierz w formacie CSV"
+4. Zapisz plik CSV na dysku
+5. Uruchom [analizator](http://szmiglo.github.io/AliorParser/app/index.html)
+6. Załaduj plik z dysku
 
-# Header 1
-## Header 2
-### Header 3
+### Funkcjonalności
 
-- Bulleted
-- List
+* Filtrowanie po wszystkich przelewach używając wszystkich parametrów
+* Wykresy miesięczne wpływów vs wydatków
+* Rodzaje wydatków (wczytywane z kodu MCC) w ujęciu miesięcznym
 
-1. Numbered
-2. List
+### Bezpieczeństwo
 
-**Bold** and _Italic_ and `Code` text
+Twoje dane są naturalnie bezpieczne, cała analiza danych odbywa się po stronie klienta tj. w przeglądarce. Żadne dane nie trafiają na jakiekolwiek serwery. Można to oczywiście sprawdzić analizując kod :)
 
-[Link](url) and ![Image](src)
-```
+### Kontrybucje
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-themes?
-
-### Support or Contact
-
-contact?
+Kod pisany "na kolanie" i typowo na swoje potrzeby. Jakość kodu niska. Wszelkie kontrybucje mile widziane :)
